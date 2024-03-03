@@ -2,8 +2,8 @@
 
 # SUBROUTINE: Embiggen text
 sub bigger {
-    my @bigger = @_;
-    for my $elem (@bigger) {
+    my @text = @_;
+    for my $elem (@text) {
         # If the element is a word (alphabetical characters only), replace it
         if ($elem =~ /[a-zA-Z]/) {
             # Store capitalization
@@ -14,13 +14,13 @@ sub bigger {
             $elem = ucfirst($elem) if $capitalized;
         }
     }
-    return @bigger;
+    return @text;
 } # End bigger
 
 # SUBROUTINE: Embetter text
 sub better {
-    my @better = @_;
-    for my $elem (@better) {
+    my @text = @_;
+    for my $elem (@text) {
         # If the element is a word (alphabetical characters only), replace it
         if ($elem =~ /[a-zA-Z]/) {
             # Store capitalization
@@ -31,9 +31,11 @@ sub better {
             $elem = ucfirst($elem) if $capitalized;
         }
     }
-    return @better;
+    return @text;
 } # End better
 
+
+# BEGIN MAIN PROGRAM
 
 # Open input file
 $file = "input.txt";
@@ -60,24 +62,25 @@ while () {
         chomp($mode);
     }
 
-    # Copy input for manipulation
-    my @text = @input_words;
-
-    # Replace each word
+    # Replace words as appropriate
+    my @text;
     if ($mode eq "bigger") {
-        @text = bigger(@text);
+        @text = bigger(@input_words);
     } elsif ($mode eq "better") {
-        @text = better(@text);
+        @text = better(@input_words);
     }
 
     # Concatenate into str and print
-    my $output = join('', @text);
-    print "Your altered text is:\n====================\n$output\n====================\n";
+    my $output_print = join('', @text);
+    print "==========INPUT===========\n$input\n";
+    print "==========OUTPUT==========\n$output_print\n==========================\n";
 
     # Repeat or quit
     print "Would you like to try again? Y/N:\n";
     my $quit_choice = lc(<STDIN>);
     chomp($quit_choice);
-    if ($quit_choice eq "n") {last};
+    if ($quit_choice eq "n") {
+        last;
+    }
 
 } # End main loop
