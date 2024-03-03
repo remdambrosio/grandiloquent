@@ -1,4 +1,6 @@
 #!usr/bin/perl
+use strict;
+use warnings;
 
 # SUBROUTINE: Embiggen text
 sub bigger {
@@ -38,9 +40,9 @@ sub better {
 # BEGIN MAIN PROGRAM
 
 # Open input file
-$file = "input.txt";
-open($fh, '<', $file) or die "Could not find $file $!";
-$input = '';
+my $file = "input.txt";
+open(my $fh, '<', $file) or die "Could not find $file $!";
+my $input = '';
 
 # Read line-by-line
 while (my $line = <$fh>) {
@@ -49,7 +51,7 @@ while (my $line = <$fh>) {
 close($fh);
 
 # Split input into array of words
-@input_words = split(/(\W+)/, $input);
+my @input_words = split(/(\W+)/, $input);
 
 # Main loop
 while () {
