@@ -2,7 +2,7 @@
 
 **Summary**
 
-Grandiloquent is a Python toy I'm building to practice my Perl skills.
+Grandiloquent is a text replacement tool I'm building in order to learn Perl.
 
 **Usage**
 
