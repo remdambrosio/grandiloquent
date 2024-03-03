@@ -4,7 +4,9 @@ use warnings;
 
 # SUBROUTINE: Embiggen text
 sub bigger {
-    my @text = @_;
+    # Array passed by reference, working copy made
+    my ($text_ref) = @_;
+    my @text = @$text_ref;
     for my $elem (@text) {
         # If the element is a word (alphabetical characters only), replace it
         if ($elem =~ /[a-zA-Z]/) {
@@ -21,16 +23,16 @@ sub bigger {
 
 # SUBROUTINE: Embetter text
 sub better {
+    # Arrays passed by reference, working copy made for text but not wordlist
     my ($text_ref, $wl_ref) = @_;
     my @text = @$text_ref;
-    my @wl = @$wl_ref;
     for my $elem (@text) {
         # If the element is a word (alphabetical characters only), replace it
         if ($elem =~ /[a-zA-Z]/) {
             # Store capitalization
             my $capitalized = ($elem =~ /^[A-Z]/);
-            # Replace word
-            $elem = $wl[rand @wl];
+            # Replace word with random entry from wordlist
+            $elem = $wl_ref->[rand @$wl_ref];
             # Restore capitalization
             $elem = ucfirst($elem) if $capitalized;
         }
@@ -75,7 +77,7 @@ while () {
     # Replace words as appropriate
     my @text;
     if ($mode eq "bigger") {
-        @text = bigger(@input_words);
+        @text = bigger(\@input_words);
     } elsif ($mode eq "better") {
         @text = better(\@input_words, \@wl);
     }
