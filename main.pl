@@ -21,14 +21,16 @@ sub bigger {
 
 # SUBROUTINE: Embetter text
 sub better {
-    my @text = @_;
+    my ($text_ref, $wl_ref) = @_;
+    my @text = @$text_ref;
+    my @wl = @$wl_ref;
     for my $elem (@text) {
         # If the element is a word (alphabetical characters only), replace it
         if ($elem =~ /[a-zA-Z]/) {
             # Store capitalization
             my $capitalized = ($elem =~ /^[A-Z]/);
             # Replace word
-            $elem = "bet";
+            $elem = $wl[rand @wl];
             # Restore capitalization
             $elem = ucfirst($elem) if $capitalized;
         }
@@ -40,18 +42,24 @@ sub better {
 # BEGIN MAIN PROGRAM
 
 # Open input file
-my $file = "input.txt";
-open(my $fh, '<', $file) or die "Could not find $file $!";
-my $input = '';
-
+my $input_filename = "input.txt";
+open(my $input_file, "<", $input_filename) or die "Could not find $input_filename $!";
+my $input = "";
 # Read line-by-line
-while (my $line = <$fh>) {
+while (my $line = <$input_file>) {
     $input .= $line;
 }
-close($fh);
+close($input_file);
 
 # Split input into array of words
 my @input_words = split(/(\W+)/, $input);
+
+# Open wordlist file into an array
+my $wl_filename = "wordlist.txt";
+open(my $wl_file, "<", $wl_filename) or die "Could not find $wl_filename $!";
+my @wl = <$wl_file>;
+chomp(@wl);
+close($wl_file);
 
 # Main loop
 while () {
@@ -69,7 +77,7 @@ while () {
     if ($mode eq "bigger") {
         @text = bigger(@input_words);
     } elsif ($mode eq "better") {
-        @text = better(@input_words);
+        @text = better(\@input_words, \@wl);
     }
 
     # Concatenate into str and print
